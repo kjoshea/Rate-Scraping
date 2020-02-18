@@ -6,6 +6,9 @@ import pandas as pd
 import os
 import smtplib
 
+# Import Libraries for Dates and Times
+import datetime
+
 # -------------------------------------------
 # Access Ladder Capital's Front Page Website
 session = HTMLSession()
@@ -17,11 +20,11 @@ table = table_div.find('.table', first=True)
 table_html = table.html
 
 # Use Pandas to Convert the HTML Table into a Panda DataFrame
-a = pd.read_html(table_html,index_col=0)
+a = pd.read_html(table_html, index_col=0)
 table_pd = a[0]
 
 # Store the 5 Year Swap (Only First 6 Characters to Avoid the Arrow Symbol)
-five = table_pd.iat[0,2][:6]
+five = table_pd.iat[0, 2][:6]
 
 # Print the Rate Table and 5 Year Swap
 print(table_pd)
@@ -43,7 +46,8 @@ with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
     # Set Email Subject and Body Content and Save it in a Message Variable
     subject = 'US Rates'
     body = f'The 5 Year Swap is {five}.'
-    msg = f'Subject: {subject}\n\n{body}'
+    date = datetime.date.today()
+    msg = f'Subject: {subject}\n\n{body}\nAs of {date}'
 
     # Send Email Message
     smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg.encode('utf8'))
