@@ -44,10 +44,10 @@ with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
     smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
 
     # Set Email Subject and Body Content and Save it in a Message Variable
-    subject = 'US Rates'
+    subject = '5 Year Swap'
     body = f'The 5 Year Swap is {five}.'
-    date = datetime.date.today()
-    msg = f'Subject: {subject}\n\n{body}\nAs of {date}'
+    date = datetime.date.today().strftime("%B %d, %Y")
+    msg = f'Subject: {subject}\n\n{body}\n\nAs of {date}'
 
     # Send Email Message
     smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg.encode('utf8'))
