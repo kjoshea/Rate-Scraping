@@ -42,7 +42,7 @@ with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
 
     # Set Email Subject and Body Content and Save it in a Message Variable
     subject = '5 Year Swap'
-    body = f'The 5 Year Swap is {five_year_swap}.'
+    body = f'The 5 Year Swap is {five_year_swap}'
     date = datetime.date.today().strftime("%B %d, %Y")
     msg = f'Subject: {subject}\n\n{body}\n\nAs of {date}'
 
