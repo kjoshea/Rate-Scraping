@@ -5,6 +5,9 @@ from requests_html import HTML, HTMLSession
 import os
 import smtplib
 
+# Import Libraries for Dates and Times
+import datetime
+
 # -------------------------------------------
 # Access Ladder Capital's Front Page Website
 session = HTMLSession()
@@ -40,7 +43,8 @@ with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
     # Set Email Subject and Body Content and Save it in a Message Variable
     subject = '5 Year Swap'
     body = f'The 5 Year Swap is {five_year_swap}.'
-    msg = f'Subject: {subject}\n\n{body}'
+    date = datetime.date.today().strftime("%B %d, %Y")
+    msg = f'Subject: {subject}\n\n{body}\n\nAs of {date}'
 
     # Send Email Message
     smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg.encode('utf8'))
