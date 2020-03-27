@@ -1,8 +1,7 @@
-# Import Libraries for Accessing Ladder Capital Website
+# Import Library for Accessing Ladder Capital Website
 from requests_html import HTML, HTMLSession
-import pandas as pd
 
-# Import Libraries for Emailing from GMAIL
+# Import Libraries for Emailing from Gmail
 import os
 import smtplib
 
@@ -11,21 +10,19 @@ import smtplib
 session = HTMLSession()
 r = session.get('https://laddercapital.com')
 
-# Find and Save the Table Section Using Chrome Developer Tools
-table_div = r.html.find('#top > main > div.section > div > div > div:nth-child(3)', first=True)
-table = table_div.find('.table', first=True)
-table_html = table.html
+# Render Ladder Capital's Website to get Updated Rate
+r.html.render()
 
-# Use Pandas to Convert the HTML Table into a Panda DataFrame
-a = pd.read_html(table_html,index_col=0)
-table_pd = a[0]
+# Identify Rate Element with CSS Selector
+five_year_swap_element = r.html.find('#financity-page-wrapper > div.gdlr-core-page-builder-body '
+                                     '> div.gdlr-core-pbf-wrapper.home-finance-box'
+                                     ' > div.gdlr-core-pbf-wrapper-content.gdlr-core-js > div > div > div > div > div'
+                                     ' > div:nth-child(3) > table > tbody > tr:nth-child(2) > td:nth-child(4) > span'
+                                     , first=True)
 
-# Store the 5 Year Swap (Only First 6 Characters to Avoid the Arrow Symbol)
-five = table_pd.iat[0,2][:6]
-
-# Print the Rate Table and 5 Year Swap
-print(table_pd)
-print(five)
+# Save the Text of the Rate Element and Print to Screen
+five_year_swap = five_year_swap_element.text
+print(five_year_swap)
 
 # ---------------------------------------------------------------
 # Pull Gmail Login Credentials from Local Environment Variables
@@ -41,8 +38,8 @@ with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
     smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
 
     # Set Email Subject and Body Content and Save it in a Message Variable
-    subject = 'US Rates'
-    body = f'The 5 Year Swap is {five}.'
+    subject = '5 Year Swap'
+    body = f'The 5 Year Swap is {five_year_swap}.'
     msg = f'Subject: {subject}\n\n{body}'
 
     # Send Email Message
