@@ -5,7 +5,7 @@ from requests_html import HTML, HTMLSession
 import os
 import smtplib
 
-# Import Libraries for Dates and Times
+# Import Library for Dates and Times
 import datetime
 
 # -------------------------------------------
